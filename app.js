@@ -1,17 +1,17 @@
 var express = require('express')
-//var cors = require('cors')
+var cors = require('cors')
 var app = express()
 
 var createEventRouter = require('./api/routes/createEventRouter')
 
 app.use(express.json());
 
-// var corsOptions = {
+var corsOptions = {
     
-//     origin: 'http://localhost:3000'
-// }
+    origin: 'http://localhost:3000'
+}
   
-app.use("/createevent",createEventRouter)
+app.use("/createevent",corsOptions,createEventRouter)
 
 
 app.listen(process.env.PORT || 8080);
