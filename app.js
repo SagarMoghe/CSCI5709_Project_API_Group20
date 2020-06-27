@@ -11,7 +11,7 @@ var corsOptions = {
     origin: 'http://localhost:3000'
 }
   
-app.use("/createevent",corsOptions,createEventRouter)
+app.use("/createevent",cors(corsOptions),createEventRouter)
 
 
 app.listen(process.env.PORT || 8080);
