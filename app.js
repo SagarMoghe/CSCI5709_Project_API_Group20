@@ -14,13 +14,4 @@ app.use(express.json());
 app.use("/createevent",createEventRouter)
 
 
-//app.use(cors())
-var corsOptions = {
-    
-    origin: 'http://localhost:3000'
-  }
-
-
-app.listen(8080, function () {
-  console.log('port 8080')
-})
+app.listen(process.env.PORT || 8080);
