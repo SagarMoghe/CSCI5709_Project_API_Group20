@@ -18,6 +18,8 @@
   "homepage": "https://github.com/JigarMakwana/CSCI5709_Project_API#readme",
   "dependencies": {
     "cors": "^2.8.5",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mysql2": "^2.1.0",
+    "ssh2": "^0.8.9"
   }
 }
