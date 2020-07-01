@@ -7,15 +7,6 @@ var Obj = function () {
     
 }
 
-const eventsHist = [
-    { userId: 1, id: 1, eventTypeVal: 'cj', fromAddress: 'Halifax1', toAddress: 'Toronto1', dateToDisplay: "07/02/2020", seats: 2, estPrice: 100, description: 'new car' },
-    { userId: 1, id: 2, eventTypeVal: 'cj', fromAddress: 'Halifax2', toAddress: 'Toronto1', dateToDisplay: "07/02/2020", seats: 2, estPrice: 100, description: 'new car' },
-    { userId: 2, id: 3, eventTypeVal: 'cj', fromAddress: 'Halifax3', toAddress: 'Toronto1', dateToDisplay: "07/02/2020", seats: 2, estPrice: 100, description: 'new car' },
-    { userId: 3, id: 4, eventTypeVal: 'cj', fromAddress: 'Halifax4', toAddress: 'Toronto1', dateToDisplay: "07/02/2020", seats: 2, estPrice: 100, description: 'new car' },
-    { userId: 3, id: 5, eventTypeVal: 'cj', fromAddress: 'Halifax5', toAddress: 'Toronto1', dateToDisplay: "07/02/2020", seats: 2, estPrice: 100, description: 'new car' },
-    { userId: 3, id: 6, eventTypeVal: 'cj', fromAddress: 'Halifax6', toAddress: 'Toronto1', dateToDisplay: "07/02/2020", seats: 2, estPrice: 100, description: 'new car' }
-    
-]
 
 Obj.getUserEventsHistory = (userId, result) => {
     connection.db566.then(function (connection) {
@@ -37,9 +28,7 @@ Obj.getUserEventsHistory = (userId, result) => {
 }
 
 Obj.postUserEvent = (userId, event, result) => {
-    
-    //var res = eventsHist.push(event);
-    //result(null, eventsHist);
+
     var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description) VALUES ?";
     var values = [
         [userId,
@@ -47,12 +36,10 @@ Obj.postUserEvent = (userId, event, result) => {
         event['newItem'].fromAddress,
         event['newItem'].toAddress,
         event['newItem'].dateToDisplay,
-        //null,
         event['newItem'].seats,
         event['newItem'].estPrice,
         event['newItem'].description]
     ];
-    //console.log(values);
     connection.db566.then(function (connection) {
         connection.query(sql, [values], function (err, succ) {
             if (err) console.log(err);
@@ -61,10 +48,10 @@ Obj.postUserEvent = (userId, event, result) => {
                 let query566 = connection.query(sql566, (error566, result566) => {
                     if (error566) {
                         console.log(error566);
+                        result(error566, null);
                     }
 		
                     else {
-                        console.log(result566[0]);
                         result(null, result566);
                     }
                 })
@@ -75,4 +62,52 @@ Obj.postUserEvent = (userId, event, result) => {
     
 
 }
+
+Obj.updateUserEvent = (userId, event, result) => {
+
+    var sql = `UPDATE createdevents SET 
+    eventTypeVal="`+ event['updatedItem'].eventTypeVal + 
+        `", fromAddress="` + event['updatedItem'].fromAddress +
+        `", toAddress="`+event['updatedItem'].toAddress +
+        `", doj="` + event['updatedItem'].dateToDisplay +
+        `", seats=` + event['updatedItem'].seats +
+        `, estPrice=` + event['updatedItem'].estPrice +
+        `, description="` + event['updatedItem'].description +
+        `" WHERE eventid=`+event['updatedItem'].eventid;
+    connection.db566.then(function (connection) {
+        connection.query(sql, function (err, succ) {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            }
+            else {
+                result(null, true);
+            }
+            
+        });
+    });
+    
+
+}
+
+Obj.deleteUserEvent = (userId, eventId, result) => {
+
+    var sql = `DELETE FROM createdevents WHERE eventid=`+eventId+` and userid=`+userId;
+  
+    connection.db566.then(function (connection) {
+        connection.query(sql, function (err, succ) {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            }
+            else {
+                result(null, true);
+            }
+            
+        });
+    });
+    
+
+}
+
 module.exports = Obj;
