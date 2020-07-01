@@ -19,25 +19,60 @@ const eventsHist = [
 
 Obj.getUserEventsHistory = (userId, result) => {
     connection.db566.then(function (connection) {
-        let sql566 = 'select * from createdevents';
+        let sql566 = 'select * from createdevents where userid='+userId;
         let query566 = connection.query(sql566, (error566, result566) => {
             if (error566) {
                 console.log(error566);
             }
 		
             else {
-                //console.log(result566);
-                
+                //console.log(result566[0]);
+                result(null, result566);
             }
         })
     });
-    var res = eventsHist.filter(item => item['userId'] == userId);
-    result(null, res);
+    //var res = eventsHist.filter(item => item['userId'] == userId);
+    //result(null, res);
 
 }
 
-Obj.postUserEvent = (userId,event, result) => {
-    var res = eventsHist.push(event);
-    result(null, eventsHist);
+Obj.postUserEvent = (userId, event, result) => {
+    
+    //var res = eventsHist.push(event);
+    //result(null, eventsHist);
+    var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description) VALUES ?";
+    var values = [
+        [userId,
+        event['newItem'].eventTypeVal,
+        event['newItem'].fromAddress,
+        event['newItem'].toAddress,
+        event['newItem'].dateToDisplay,
+        //null,
+        event['newItem'].seats,
+        event['newItem'].estPrice,
+        event['newItem'].description]
+    ];
+    //console.log(values);
+    connection.db566.then(function (connection) {
+        connection.query(sql, [values], function (err, succ) {
+            if (err) console.log(err);
+            else {
+                let sql566 = 'select * from createdevents where userid=' + userId;
+                let query566 = connection.query(sql566, (error566, result566) => {
+                    if (error566) {
+                        console.log(error566);
+                    }
+		
+                    else {
+                        console.log(result566[0]);
+                        result(null, result566);
+                    }
+                })
+            }
+            
+        });
+    });
+    
+
 }
 module.exports = Obj;
