@@ -1,5 +1,5 @@
 
-const EventObjModel = require('../models/createModelModel');
+const EventObjModel = require('../models/createModel');
 
 exports.get_User_EventsHistory = (req, res) => {
     EventObjModel.getUserEventsHistory(req.params.userId, (err, succ) => {
