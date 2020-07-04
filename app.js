@@ -4,6 +4,7 @@ var app = express()
 
 var createEventRouter = require('./api/routes/createEventRouter')
 var requestsRouter = require('./api/routes/requestsRouter')
+var findEventRouter = require('./api/routes/findEventRouter')
 
 app.use(express.json());
 app.use(cors())
@@ -15,6 +16,7 @@ app.use(cors())
 // }
   //cors(corsOptions),
 app.use("/createevent", createEventRouter)
+app.use("/findevents",findEventRouter)
 app.use("/requestsreceived",requestsRouter)
 
 
