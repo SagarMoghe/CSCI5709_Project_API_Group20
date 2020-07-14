@@ -1,5 +1,6 @@
 
 var connection = require('./DatabaseConn');
+const { NULL } = require('mysql2/lib/constants/types');
 
 
 
@@ -29,16 +30,22 @@ Obj.getUserEventsHistory = (userId, result) => {
 
 Obj.postUserEvent = (userId, event, result) => {
 
-    var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description) VALUES ?";
+    var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description,imageurl1,imageurl2) VALUES ?";
     var values = [
         [userId,
-        event['newItem'].eventTypeVal,
-        event['newItem'].fromAddress,
-        event['newItem'].toAddress,
-        event['newItem'].dateToDisplay,
-        event['newItem'].seats,
-        event['newItem'].estPrice,
-        event['newItem'].description]
+            event['newItem'].eventTypeVal,
+            event['newItem'].fromAddress,
+            event['newItem'].toAddress,
+            event['newItem'].dateToDisplay,
+            event['newItem'].seats,
+            event['newItem'].estPrice,
+            event['newItem'].description,
+            event['newItem'].imageurls.length > 0
+                && event['newItem'].imageurls[0] != undefined ?
+                event['newItem'].imageurls[0] : null,
+            event['newItem'].imageurls.length > 1
+                && event['newItem'].imageurls[1] != undefined ?
+                event['newItem'].imageurls[1] : null,]
     ];
     connection.db566.then(function (connection) {
         connection.query(sql, [values], function (err, succ) {
@@ -64,16 +71,20 @@ Obj.postUserEvent = (userId, event, result) => {
 }
 
 Obj.updateUserEvent = (userId, event, result) => {
-
+    let url1 = event['updatedItem'].imageurls.length > 0 && event['updatedItem'].imageurls[0] != undefined ? "'" + event['updatedItem'].imageurls[0] + "'" : null;
+    let url2 = event['updatedItem'].imageurls.length > 1 && event['updatedItem'].imageurls[1] != undefined ? "'" + event['updatedItem'].imageurls[1] + "'" : null;
     var sql = `UPDATE createdevents SET 
-    eventTypeVal="`+ event['updatedItem'].eventTypeVal + 
+    eventTypeVal="`+ event['updatedItem'].eventTypeVal +
         `", fromAddress="` + event['updatedItem'].fromAddress +
-        `", toAddress="`+event['updatedItem'].toAddress +
+        `", toAddress="` + event['updatedItem'].toAddress +
         `", doj="` + event['updatedItem'].dateToDisplay +
         `", seats=` + event['updatedItem'].seats +
         `, estPrice=` + event['updatedItem'].estPrice +
         `, description="` + event['updatedItem'].description +
-        `" WHERE eventid=`+event['updatedItem'].eventid;
+        `", imageurl1=` + url1 +
+        `, imageurl2=` + url2 +
+        ` WHERE eventid=` + event['updatedItem'].eventid;
+    //console.log(sql);
     connection.db566.then(function (connection) {
         connection.query(sql, function (err, succ) {
             if (err) {
