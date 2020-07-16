@@ -30,7 +30,7 @@ Obj.getUserEventsHistory = (userId, result) => {
 
 Obj.postUserEvent = (userId, event, result) => {
 
-    var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description,imageurl1,imageurl2) VALUES ?";
+    var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description,imageurl1,imageurl2,createddate) VALUES ?";
     var values = [
         [userId,
             event['newItem'].eventTypeVal,
@@ -45,7 +45,8 @@ Obj.postUserEvent = (userId, event, result) => {
                 event['newItem'].imageurls[0] : null,
             event['newItem'].imageurls.length > 1
                 && event['newItem'].imageurls[1] != undefined ?
-                event['newItem'].imageurls[1] : null,]
+                event['newItem'].imageurls[1] : null,
+                new Date()]
     ];
     connection.db566.then(function (connection) {
         connection.query(sql, [values], function (err, succ) {
