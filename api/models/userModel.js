@@ -1,11 +1,11 @@
-
 var connection = require('./DatabaseConn');
 const { NULL } = require('mysql2/lib/constants/types');
+const bcrypt = require("bcryptjs");
 var Obj = function () {
 
 }
 
-// @route GET api/usermng/getusers
+// @route GET api /usermng/getusers
 // @desc get users
 // @access Public
 //GET Route to fetch all the users from FCS DB
@@ -22,7 +22,7 @@ Obj._getUserDetails = (res) => {
     });
 }
 
-// @route POST api/usermng/register
+// @route POST api /usermng/register
 // @desc Register user
 // @access Public
 //POST Route to register a user record in FCS DB
@@ -36,17 +36,18 @@ Obj._registerUser = (req, res) => {
                 console.log(err1);
                 res(err1, null);
             } else if (result1.length === 0) {
-                console.log(result1.length)
+                // console.log(result1.length)
                 console.log('Email id is not found and to be inserted/pushed');
                 const sqlInsert = "INSERT INTO users SET ?";
-                let values = {
-                    userName: req.userName,
-                    email: req.email,
-                    password: req.password,
-                    dob: req.dob,
-                    gender: req.gender
-                };
-
+                let unHashesPassword = req.password;
+                bcrypt.hash(unHashesPassword,10, function (err, hash) {
+                    let values = {
+                        userName: req.userName,
+                        email: req.email,
+                        password: hash,
+                        dob: req.dob,
+                        gender: req.gender
+                    };
                 connection.query(sqlInsert, values, function (err, result) {
                     if (err) {
                         console.log(err);
@@ -56,6 +57,7 @@ Obj._registerUser = (req, res) => {
                         res(null, result);
                     }
                 });
+            });
             } else {
                 console.log('Email id ' + req.email +
                     ' already exists in our database');
@@ -68,7 +70,7 @@ Obj._registerUser = (req, res) => {
     });
 }
 
-// @route PUT api/usermng/updateUser/:userId
+// @route PUT api /usermng/updateUser/:userId
 // @desc Update user details
 // @access Public
 //PUT Route to update a user record in FCS DB
@@ -95,7 +97,7 @@ Obj._updateUserDetail = (userId, req, result) => {
 
 }
 
-// @route DELETE api/usermng/deleteUser/:userId
+// @route DELETE api /usermng/deleteUser/:userId
 // @desc Delete user
 // @access Public
 //DELETE Route to delete a user record from FCS DB
