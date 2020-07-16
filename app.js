@@ -16,8 +16,14 @@ app.use(cors())
 //     origin: 'https://csci5709webgroup20.herokuapp.com'
 // }
   //cors(corsOptions),
+
+//All requests related to CreateEvent screen goes here
 app.use("/createevent", createEventRouter)
-app.use("/findevents",findEventRouter)
+
+//All requests related to FindEvent screen goes here
+app.use("/findevents", findEventRouter)
+
+
 app.use("/requestsreceived",requestsRouter)
 app.use("/usermng",userMngRouter)
 
