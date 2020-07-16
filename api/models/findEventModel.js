@@ -1,3 +1,5 @@
+//@Author - RajKumar B00849566
+
 var connection = require('./DatabaseConn');
 
 
@@ -6,6 +8,7 @@ var Obj = function () {
     
 }
 
+//GET all matches that are not part of user who is searching
 Obj.findEvents = (userId, result) => {
     connection.db566.then(function (connection) {
         let sql566 = 'select * from createdevents where userid !='+userId;
@@ -20,9 +23,6 @@ Obj.findEvents = (userId, result) => {
             }
         })
     });
-    //var res = eventsHist.filter(item => item['userId'] == userId);
-    //result(null, res);
-
 }
 
 module.exports = Obj;
