@@ -29,7 +29,7 @@ exports.updateUserDetail = (req, res) => {
 }
 
 exports.deleteUser = (req, res) => {
-    UserMngObjModel._deleteUser(req.params.userId, req.params.eventid, (err, succ) => {
+    UserMngObjModel._deleteUser(req.params.userId, (err, succ) => {
         if (err) {
             res.send('error occured -- controller');
         }

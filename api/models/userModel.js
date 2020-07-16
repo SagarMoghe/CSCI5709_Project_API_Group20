@@ -5,6 +5,10 @@ var Obj = function () {
 
 }
 
+// @route GET api/usermng/getusers
+// @desc get users
+// @access Public
+//GET Route to fetch all the users from FCS DB
 Obj._getUserDetails = (res) => {
     connection.db566.then(function (connection) {
         let sql = 'select * from users';
@@ -25,19 +29,20 @@ Obj._getUserDetails = (res) => {
 Obj._registerUser = (req, res) => {
     let where = 'email = ?';
     let value = [req.email];
-    let sqlSelect = 'select * from users where ' + where;
+    let sqlSelect = 'SELECT * FROM users WHERE ' + where;
     connection.db566.then(function (connection) {
         let querySelect = connection.query(sqlSelect, value, (err1, result1) => {
             if (err1) {
                 console.log(err1);
                 res(err1, null);
             } else if (result1.length === 0) {
+                console.log(result1.length)
                 console.log('Email id is not found and to be inserted/pushed');
                 const sqlInsert = "INSERT INTO users SET ?";
                 let values = {
                     userName: req.userName,
                     email: req.email,
-                    password: req.email,
+                    password: req.password,
                     dob: req.dob,
                     gender: req.gender
                 };
@@ -47,25 +52,36 @@ Obj._registerUser = (req, res) => {
                         console.log(err);
                         res(err, null);
                     } else {
-                        console.log('User added in users table');
-                        res('User ' + req.email + ' added in users table', result);
+                        console.log('User ' + req.email + ' added in users table');
+                        res(null, result);
                     }
                 });
             } else {
+                console.log('Email id ' + req.email +
+                    ' already exists in our database');
                 err = 'Email id ' + req.email +
                     ' already exists in our database';
-                res(err, null);
+                // res(err);
+                res(null)
             }
         });
     });
 }
 
-Obj._updateUserDetail = (userId, event, result) => {
-    let url1 = event['updatedItem'].imageurls.length > 0 && event['updatedItem'].imageurls[0] != undefined ? "'" + event['updatedItem'].imageurls[0] + "'" : null;
-    let url2 = event['updatedItem'].imageurls.length > 1 && event['updatedItem'].imageurls[1] != undefined ? "'" + event['updatedItem'].imageurls[1] + "'" : null;
-    var sql = "";
+// @route PUT api/usermng/updateUser/:userId
+// @desc Update user details
+// @access Public
+//PUT Route to update a user record in FCS DB
+Obj._updateUserDetail = (userId, req, result) => {
+    values = [req.userName,
+        req.email,
+        req.password,
+        req.dob,
+        req.gender]
+    // console.log(req.userName, req.email, req.password, req.dob, req.gender)
+    var sqlUpdate = 'UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= '+ userId;
     connection.db566.then(function (connection) {
-        connection.query(sql, function (err, succ) {
+        connection.query(sqlUpdate, values, function (err, succ) {
             if (err) {
                 console.log(err);
                 result(err, null);
@@ -73,25 +89,30 @@ Obj._updateUserDetail = (userId, event, result) => {
             else {
                 result(null, true);
             }
-
         });
     });
 
 
 }
 
-Obj._deleteUser = (userId, eventId, result) => {
-
-    var sql = `DELETE FROM createdevents WHERE eventid=`+eventId+` and userid=`+userId;
-
+// @route DELETE api/usermng/deleteUser/:userId
+// @desc Delete user
+// @access Public
+//DELETE Route to delete a user record from FCS DB
+Obj._deleteUser = (userId, result) => {
+    let where = 'userId = ?';
+    let sqlSelect = 'DELETE FROM users WHERE ' + where;
+    console.log(sqlSelect);
     connection.db566.then(function (connection) {
-        connection.query(sql, function (err, succ) {
+        connection.query(sqlSelect, userId, function (err, succ) {
             if (err) {
                 console.log(err);
                 result(err, null);
             }
             else {
-                result(null, true);
+                console.log('User ' + userId + ' deleted from users table');
+                // result(null, 'User ' + userId + ' deleted from users table');
+                // result(null, true);
             }
 
         });
