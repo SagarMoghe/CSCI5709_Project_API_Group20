@@ -10,6 +10,15 @@ exports.getUserDetails = (req, res) => {
     })
 }
 
+exports.loginUser = (req, res) => {
+    UserMngObjModel._loginUser(req.body, (err, succ) => {
+        if (err) {
+            res.send(err);
+        }
+        res.json(succ)
+    })
+}
+
 exports.registerUser = (req, res) => {
     UserMngObjModel._registerUser(req.body, (err, succ) => {
         if (err) {

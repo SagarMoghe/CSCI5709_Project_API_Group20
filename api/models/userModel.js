@@ -22,13 +22,51 @@ Obj._getUserDetails = (res) => {
     });
 }
 
-// @route POST api /usermng/register
+// @route GET api /usermng/login
+// @desc get users
+// @access Public
+//GET Route to fetch the user from FCS DB
+Obj._loginUser = (req, res) => {
+    console.log(req);
+    const password = req.user.password;
+    const email = req.user.email;
+    let where = 'email = ?';
+    let sqlSelect = 'SELECT * FROM users WHERE ' + where;
+    connection.db566.then(function (connection) {
+        let query = connection.query(sqlSelect, email, (err, result) => {
+            if (err) {
+                console.log(err);
+                res(err, null);
+            } else if (result.length === 0) {
+                console.log('Email Id is not registered with RideShare');
+                res(null);
+            } else {
+                console.log(result)
+                const hashedPassword = result[0].password;
+
+                // Check password
+                bcrypt.compare(password, hashedPassword).then(isMatch => {
+                    if (isMatch) {
+                        console.log('Login successful!');
+                        res(null, result);
+                    } else {
+                        console.log('Invalid Password');
+                        res(null);
+                    }
+                });
+            }
+        })
+    });
+}
+
+// @route POST api /usermng/registerUser
 // @desc Register user
 // @access Public
 //POST Route to register a user record in FCS DB
 Obj._registerUser = (req, res) => {
+    // console.log(req.user.username)
     let where = 'email = ?';
-    let value = [req.email];
+    let value = [req.user.email];
     let sqlSelect = 'SELECT * FROM users WHERE ' + where;
     connection.db566.then(function (connection) {
         let querySelect = connection.query(sqlSelect, value, (err1, result1) => {
@@ -39,29 +77,29 @@ Obj._registerUser = (req, res) => {
                 // console.log(result1.length)
                 console.log('Email id is not found and to be inserted/pushed');
                 const sqlInsert = "INSERT INTO users SET ?";
-                let unHashesPassword = req.password;
+                let unHashesPassword = req.user.password;
                 bcrypt.hash(unHashesPassword,10, function (err, hash) {
                     let values = {
-                        userName: req.userName,
-                        email: req.email,
+                        userName: req.user.username,
+                        email: req.user.email,
                         password: hash,
-                        dob: req.dob,
-                        gender: req.gender
+                        dob: req.user.dob,
+                        gender: req.user.gender
                     };
                 connection.query(sqlInsert, values, function (err, result) {
                     if (err) {
                         console.log(err);
                         res(err, null);
                     } else {
-                        console.log('User ' + req.email + ' added in users table');
+                        console.log('User ' + req.user.email + ' added in users table');
                         res(null, result);
                     }
                 });
             });
             } else {
-                console.log('Email id ' + req.email +
+                console.log('Email id ' + req.user.email +
                     ' already exists in our database');
-                err = 'Email id ' + req.email +
+                err = 'Email id ' + req.user.email +
                     ' already exists in our database';
                 // res(err);
                 res(null)
