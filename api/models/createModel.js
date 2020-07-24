@@ -1,25 +1,25 @@
 //@Author - RajKumar B00849566
 
 var connection = require('./DatabaseConn');
-const { NULL } = require('mysql2/lib/constants/types');
+const {
+    NULL
+} = require('mysql2/lib/constants/types');
 
 
 
 var Obj = function () {
-    
+
 }
 
 //GET all the events created by given userId
 Obj.getUserEventsHistory = (userId, result) => {
     //connection is a promise, use 'then' to execute after promise returns
     connection.db566.then(function (connection) {
-        let sql566 = 'select * from createdevents where userid='+userId;
+        let sql566 = 'select * from createdevents where userid=' + userId;
         let query566 = connection.query(sql566, (error566, result566) => {
             if (error566) {
                 console.log(error566);
-            }
-		
-            else {
+            } else {
                 //console.log(result566[0]);
                 result(null, result566);
             }
@@ -29,6 +29,8 @@ Obj.getUserEventsHistory = (userId, result) => {
 
 //POST the event. insert created event to database
 Obj.postUserEvent = (userId, event, result) => {
+    // check if user has already created that event?
+    // TODO
 
     var sql = "INSERT INTO createdevents (userid,eventTypeVal, fromAddress, toAddress, doj, seats, estPrice, description,imageurl1,imageurl2,createddate) VALUES ?";
     var values = [
@@ -40,13 +42,14 @@ Obj.postUserEvent = (userId, event, result) => {
             event['newItem'].seats,
             event['newItem'].estPrice,
             event['newItem'].description,
-            event['newItem'].imageurls.length > 0
-                && event['newItem'].imageurls[0] != undefined ?
-                event['newItem'].imageurls[0] : null,
-            event['newItem'].imageurls.length > 1
-                && event['newItem'].imageurls[1] != undefined ?
-                event['newItem'].imageurls[1] : null,
-                new Date()]
+            event['newItem'].imageurls.length > 0 &&
+            event['newItem'].imageurls[0] != undefined ?
+            event['newItem'].imageurls[0] : null,
+            event['newItem'].imageurls.length > 1 &&
+            event['newItem'].imageurls[1] != undefined ?
+            event['newItem'].imageurls[1] : null,
+            new Date()
+        ]
     ];
     connection.db566.then(function (connection) {
         connection.query(sql, [values], function (err, succ) {
@@ -58,14 +61,12 @@ Obj.postUserEvent = (userId, event, result) => {
                     if (error566) {
                         console.log(error566);
                         result(error566, null);
-                    }
-		
-                    else {
+                    } else {
                         result(null, result566);
                     }
                 })
             }
-            
+
         });
     });
 }
@@ -76,7 +77,7 @@ Obj.updateUserEvent = (userId, event, result) => {
     let url1 = event['updatedItem'].imageurls.length > 0 && event['updatedItem'].imageurls[0] != undefined ? "'" + event['updatedItem'].imageurls[0] + "'" : null;
     let url2 = event['updatedItem'].imageurls.length > 1 && event['updatedItem'].imageurls[1] != undefined ? "'" + event['updatedItem'].imageurls[1] + "'" : null;
     var sql = `UPDATE createdevents SET 
-    eventTypeVal="`+ event['updatedItem'].eventTypeVal +
+    eventTypeVal="` + event['updatedItem'].eventTypeVal +
         `", fromAddress="` + event['updatedItem'].fromAddress +
         `", toAddress="` + event['updatedItem'].toAddress +
         `", doj="` + event['updatedItem'].dateToDisplay +
@@ -92,29 +93,27 @@ Obj.updateUserEvent = (userId, event, result) => {
             if (err) {
                 console.log(err);
                 result(err, null);
-            }
-            else {
+            } else {
                 result(null, true);
             }
-            
+
         });
-    }); 
+    });
 }
 
 //DELETE particular event
 Obj.deleteUserEvent = (userId, eventId, result) => {
 
-    var sql = `DELETE FROM createdevents WHERE eventid=`+eventId+` and userid=`+userId;
-  
+    var sql = `DELETE FROM createdevents WHERE eventid=` + eventId + ` and userid=` + userId;
+
     connection.db566.then(function (connection) {
         connection.query(sql, function (err, succ) {
             if (err) {
                 console.log(err);
                 result(err, null);
-            }
-            else {
+            } else {
                 result(null, true);
-            }     
+            }
         });
     });
 }
