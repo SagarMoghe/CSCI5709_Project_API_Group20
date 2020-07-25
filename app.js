@@ -6,6 +6,7 @@ var createEventRouter = require('./api/routes/createEventRouter')
 var requestsRouter = require('./api/routes/requestsRouter')
 var findEventRouter = require('./api/routes/findEventRouter')
 var userMngRouter = require('./api/routes/UserMngRouter')
+var insertFeedback = require('./api/routes/feedbackRouter')
 
 app.use(express.json());
 app.use(cors())
@@ -25,6 +26,12 @@ app.use("/findevents", findEventRouter)
 
 // app.use("/bookingdetails", requestsRouter)
 
+//All requests related to Feedback screen goes here
+app.use("/insertFeedback", insertFeedback)
+
+
+app.use("/requestsreceived",requestsRouter)
+app.use("/usermng",userMngRouter)
 app.use("/requestsreceived", requestsRouter)
 app.use("/usermng", userMngRouter)
 app.use("/verifyid", userMngRouter)
