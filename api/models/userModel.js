@@ -22,6 +22,34 @@ Obj._getUserDetails = (res) => {
     });
 }
 
+// @route GET api /usermng/getSpecificUser
+// @desc get specific user
+// @access Public
+//GET Route to fetch all the users from FCS DB
+Obj._getSpecificUser = (req, res) => {
+    connection.db566.then(function (connection) {
+        console.log("-----------------");
+        console.log("in _getSpecificUser");
+        const email = req.user.email;
+        console.log('_getSpecificUser ' + email);
+        let where = 'email = ?';
+        let sqlSelect = 'SELECT * FROM users WHERE ' + where;
+        let query = connection.query(sqlSelect, email, (err, result) => {
+            if (err) {
+                console.log(err);
+                res(err, null);
+            }else if (result.length === 0) {
+                console.log('_getSpecificUser: Email Id is not registered with RideShare');
+                res(null);
+            } else {
+                console.log(result)
+                console.log("_getSpecificUser: This is userid: " + result[0].userId)
+                res(null, result);
+            }
+        })
+    });
+}
+
 // @route GET api /usermng/login
 // @desc get users
 // @access Public
@@ -64,7 +92,7 @@ Obj._loginUser = (req, res) => {
 // @access Public
 //POST Route to register a user record in FCS DB
 Obj._registerUser = (req, res) => {
-    // console.log(req.user.username)
+    console.log('_registerUser');
     let where = 'email = ?';
     let value = [req.user.email];
     let sqlSelect = 'SELECT * FROM users WHERE ' + where;
@@ -75,7 +103,7 @@ Obj._registerUser = (req, res) => {
                 res(err1, null);
             } else if (result1.length === 0) {
                 // console.log(result1.length)
-                console.log('Email id is not found and to be inserted/pushed');
+                console.log('_registerUser: Email id is not found and to be inserted/pushed');
                 const sqlInsert = "INSERT INTO users SET ?";
                 let unHashesPassword = req.user.password;
                 bcrypt.hash(unHashesPassword,10, function (err, hash) {
@@ -91,13 +119,14 @@ Obj._registerUser = (req, res) => {
                         console.log(err);
                         res(err, null);
                     } else {
-                        console.log('User ' + req.user.email + ' added in users table');
+                        console.log('_registerUser: User ' + req.user.email + ' added in users table');
+                        console.log(result);
                         res(null, result);
                     }
                 });
             });
             } else {
-                console.log('Email id ' + req.user.email +
+                console.log('_registerUser: Email id ' + req.user.email +
                     ' already exists in our database');
                 err = 'Email id ' + req.user.email +
                     ' already exists in our database';
