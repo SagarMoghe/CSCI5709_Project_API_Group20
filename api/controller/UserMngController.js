@@ -1,4 +1,3 @@
-
 const UserMngObjModel = require('../models/userModel');
 
 exports.getUserDetails = (req, res) => {
@@ -39,6 +38,15 @@ exports.updateUserDetail = (req, res) => {
 
 exports.deleteUser = (req, res) => {
     UserMngObjModel._deleteUser(req.params.userId, (err, succ) => {
+        if (err) {
+            res.send('error occured -- controller');
+        }
+        res.json(succ)
+    })
+};
+
+exports.verifyId1 = (req, res) => {
+    UserMngObjModel._putVerifyId(req.params.userId, req.body, (err, succ) => {
         if (err) {
             res.send('error occured -- controller');
         }

@@ -23,10 +23,10 @@ app.use("/createevent", createEventRouter)
 //All requests related to FindEvent screen goes here
 app.use("/findevents", findEventRouter)
 
-app.use("/bookingdetails", requestsRouter)
+// app.use("/bookingdetails", requestsRouter)
 
 app.use("/requestsreceived", requestsRouter)
 app.use("/usermng", userMngRouter)
-
+app.use("/verifyid", userMngRouter)
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log('listening on port....' + port));

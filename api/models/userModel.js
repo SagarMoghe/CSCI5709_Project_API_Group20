@@ -1,5 +1,7 @@
 var connection = require('./DatabaseConn');
-const { NULL } = require('mysql2/lib/constants/types');
+const {
+    NULL
+} = require('mysql2/lib/constants/types');
 const bcrypt = require("bcryptjs");
 var Obj = function () {
 
@@ -78,7 +80,7 @@ Obj._registerUser = (req, res) => {
                 console.log('Email id is not found and to be inserted/pushed');
                 const sqlInsert = "INSERT INTO users SET ?";
                 let unHashesPassword = req.user.password;
-                bcrypt.hash(unHashesPassword,10, function (err, hash) {
+                bcrypt.hash(unHashesPassword, 10, function (err, hash) {
                     let values = {
                         userName: req.user.username,
                         email: req.user.email,
@@ -86,16 +88,16 @@ Obj._registerUser = (req, res) => {
                         dob: req.user.dob,
                         gender: req.user.gender
                     };
-                connection.query(sqlInsert, values, function (err, result) {
-                    if (err) {
-                        console.log(err);
-                        res(err, null);
-                    } else {
-                        console.log('User ' + req.user.email + ' added in users table');
-                        res(null, result);
-                    }
+                    connection.query(sqlInsert, values, function (err, result) {
+                        if (err) {
+                            console.log(err);
+                            res(err, null);
+                        } else {
+                            console.log('User ' + req.user.email + ' added in users table');
+                            res(null, result);
+                        }
+                    });
                 });
-            });
             } else {
                 console.log('Email id ' + req.user.email +
                     ' already exists in our database');
@@ -117,16 +119,16 @@ Obj._updateUserDetail = (userId, req, result) => {
         req.email,
         req.password,
         req.dob,
-        req.gender]
+        req.gender
+    ]
     // console.log(req.userName, req.email, req.password, req.dob, req.gender)
-    var sqlUpdate = 'UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= '+ userId;
+    var sqlUpdate = 'UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= ' + userId;
     connection.db566.then(function (connection) {
         connection.query(sqlUpdate, values, function (err, succ) {
             if (err) {
                 console.log(err);
                 result(err, null);
-            }
-            else {
+            } else {
                 result(null, true);
             }
         });
@@ -148,8 +150,7 @@ Obj._deleteUser = (userId, result) => {
             if (err) {
                 console.log(err);
                 result(err, null);
-            }
-            else {
+            } else {
                 console.log('User ' + userId + ' deleted from users table');
                 // result(null, 'User ' + userId + ' deleted from users table');
                 // result(null, true);
@@ -158,6 +159,26 @@ Obj._deleteUser = (userId, result) => {
         });
     });
 
+
+
+}
+
+Obj._putVerifyId = (userId, url1, result) => {
+    console.log(userId)
+    console.log(url1)
+    values = [0, url1.image1, url1.image2]
+    // console.log(req.userName, req.email, req.password, req.dob, req.gender)
+    var sqlUpdate = 'UPDATE users SET isVerified= ?, idimage1=? , idimage2=? WHERE userId= ' + userId;
+    connection.db566.then(function (connection) {
+        connection.query(sqlUpdate, values, function (err, succ) {
+            if (err) {
+                console.log(err);
+                result(err, null);
+            } else {
+                result(null, true);
+            }
+        });
+    });
 
 }
 

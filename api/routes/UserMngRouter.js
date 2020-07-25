@@ -7,5 +7,5 @@ router.post("/login", userMngController.loginUser)
 router.post("/registerUser", userMngController.registerUser)
 router.put("/updateUser/:userId", userMngController.updateUserDetail)
 router.delete("/deleteUser/:userId", userMngController.deleteUser)
-
+router.put("/addid/:userId", userMngController.verifyId1)
 module.exports = router;
