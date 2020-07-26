@@ -8,7 +8,7 @@ exports.get_events_and_requests = (req, res) => {
         res.json(succ)
     })
 }
-
+// Author Breej - B00843525
 exports.post_requests = (req, res) => {
     EventObjModel.postRequestedEvent(req.params.userId, req.body, (err, succ) => {
         if (err) {

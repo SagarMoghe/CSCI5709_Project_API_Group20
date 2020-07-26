@@ -41,8 +41,8 @@ Obj.getEventsAndRequests = (userId, result) => {
     //result(null, res);
 }
 
-
-
+// Author Breej - B00843525
+// used to insert request data and keep track of who requested which events
 Obj.postRequestedEvent = (userId, event, result) => {
     // check weather the event has already been requested by user ?
     var squery = `Select * from requestevent where userid = ${event.userid} and eventid = ${event.eventid}`;

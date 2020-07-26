@@ -191,6 +191,8 @@ Obj._deleteUser = (userId, result) => {
 
 }
 
+// Author of below function - Breej B00843525 
+//used to update dataase with the image URL of ID that has been uploaded to fire base
 Obj._putVerifyId = (userId, url1, result) => {
     console.log(userId)
     console.log(url1)

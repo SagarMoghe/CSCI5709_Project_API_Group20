@@ -55,6 +55,7 @@ exports.deleteUser = (req, res) => {
     })
 };
 
+// Author Breej - B00843525
 exports.verifyId1 = (req, res) => {
     UserMngObjModel._putVerifyId(req.params.userId, req.body, (err, succ) => {
         if (err) {
