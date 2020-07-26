@@ -3,6 +3,7 @@ const { NULL } = require("mysql2/lib/constants/types");
 const bcrypt = require("bcryptjs");
 var Obj = function () {};
 
+//Author - Jigar Makwana B00842568
 // @route GET api /usermng/getusers
 // @desc get users
 // @access Public
@@ -20,6 +21,7 @@ Obj._getUserDetails = (res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 // @route GET api /usermng/getSpecificUser
 // @desc get specific user
 // @access Public
@@ -50,6 +52,7 @@ Obj._getSpecificUser = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 // @route GET api /usermng/login
 // @desc get users
 // @access Public
@@ -87,6 +90,7 @@ Obj._loginUser = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 // @route POST api /usermng/registerUser
 // @desc Register user
 // @access Public
@@ -145,6 +149,7 @@ Obj._registerUser = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 // @route PUT api /usermng/updateUser/:userId
 // @desc Update user details
 // @access Public
@@ -188,6 +193,7 @@ Obj._updateUserProfile = (userId, req, result) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 // @route DELETE api /usermng/deleteUser/:userId
 // @desc Delete user
 // @access Public
