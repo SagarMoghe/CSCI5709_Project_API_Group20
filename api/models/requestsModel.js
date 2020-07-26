@@ -36,47 +36,45 @@ Obj.getEventsAndRequests = (userId, result) => {
             }
         })
     });
+
     //var res = eventsHist.filter(item => item['userId'] == userId);
     //result(null, res);
-
-    Obj.postRequestedEvent = (userId, event, result) => {
-        // check weather the event has already been requested by user ?
-        var squery = `Select * from requestevent where userid = ${event.userid} and eventid = ${event.eventid}`;
-        connection.db566.then(function (connection) {
-            let equery = connection.query(squery, (err, searchresult) => {
-                if (err) {
-                    console.log(err);
-                } else if (!searchresult) {
-                    var query = "INSERT INTO gangi.requestevent (eventid,userid,seats,description,status) VALUES ? ";
-                    var values = [
-                        event.eventid,
-                        event.userid,
-                        event.seats,
-                        event.description,
-                        event.status = (-1)
-                    ];
-
-                    connection.query(query, values, (err, insertresult) => {
-                        if (err) {
-                            console.log(err);
-                        } else {
-                            result(null, 'success')
-                        }
-                    });
-                } else {
-                    result('exist', null)
-                }
-
-            });
-        });
-
-
-
-
-
-
-    }
-
 }
+
+// Author Breej - B00843525
+// used to insert request data and keep track of who requested which events
+Obj.postRequestedEvent = (userId, event, result) => {
+    // check weather the event has already been requested by user ?
+    var squery = `Select * from requestevent where userid = ${event.userid} and eventid = ${event.eventid}`;
+    connection.db566.then(function (connection) {
+        let equery = connection.query(squery, (err, searchresult) => {
+            console.log(searchresult, searchresult.length)
+            if (err) {
+                console.log(err);
+            } else if (searchresult.length == 0) {
+                var query = `INSERT INTO requestevent (eventid,userid,seats,description,status) VALUES (?) `;
+                var values = [
+                    event.eventid,
+                    event.userid,
+                    event.seats,
+                    event.description,
+                    -1
+                ];
+
+                connection.query(query, [values], (err, insertresult) => {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        result(null, 'success')
+                    }
+                });
+            } else {
+                result("exist", null)
+            }
+
+        });
+    });
+
+};
 
 module.exports = Obj;

@@ -8,12 +8,18 @@ exports.get_events_and_requests = (req, res) => {
         res.json(succ)
     })
 }
-
+// Author Breej - B00843525
 exports.post_requests = (req, res) => {
     EventObjModel.postRequestedEvent(req.params.userId, req.body, (err, succ) => {
         if (err) {
-            res.send('error occured -- controller');
+            console.log("err", err);
+            res.json(err);
         }
-        res.json(succ)
+        if (succ) {
+            console.log("succ", succ)
+            res.json(succ)
+        }
+
+
     })
 }

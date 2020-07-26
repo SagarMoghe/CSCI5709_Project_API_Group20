@@ -48,6 +48,8 @@ exports.updateUserDetail = (req, res) => {
     }
   );
 };
+
+// Author Nishant Amoli - B00835717
 exports.updateUserProfile = (req, res) => {
   UserMngObjModel._updateUserProfile(
     req.params.userId,
@@ -63,6 +65,15 @@ exports.updateUserProfile = (req, res) => {
 
 exports.deleteUser = (req, res) => {
   UserMngObjModel._deleteUser(req.params.userId, (err, succ) => {
+    if (err) {
+      res.send("error occured -- controller");
+    }
+    res.json(succ);
+  });
+};
+// Author Breej - B00843525
+exports.verifyId1 = (req, res) => {
+  UserMngObjModel._putVerifyId(req.params.userId, req.body, (err, succ) => {
     if (err) {
       res.send("error occured -- controller");
     }

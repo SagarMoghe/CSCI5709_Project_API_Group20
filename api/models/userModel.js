@@ -167,6 +167,8 @@ Obj._updateUserDetail = (userId, req, result) => {
   });
 };
 
+// Author Nishant Amoli - B00835717
+
 Obj._updateUserProfile = (userId, req, result) => {
   console.log("Got in!");
   values = [req.fullName, req.phone, req.profession, req.bio, req.url[0]];
@@ -203,6 +205,28 @@ Obj._deleteUser = (userId, result) => {
         console.log("User " + userId + " deleted from users table");
         // result(null, 'User ' + userId + ' deleted from users table');
         // result(null, true);
+      }
+    });
+  });
+};
+
+// Author of below function - Breej B00843525
+//used to update dataase with the image URL of ID that has been uploaded to fire base
+Obj._putVerifyId = (userId, url1, result) => {
+  console.log(userId);
+  console.log(url1);
+  values = [0, url1.image1, url1.image2];
+  // console.log(req.userName, req.email, req.password, req.dob, req.gender)
+  var sqlUpdate =
+    "UPDATE users SET isVerified= ?, idimage1=? , idimage2=? WHERE userId= " +
+    userId;
+  connection.db566.then(function (connection) {
+    connection.query(sqlUpdate, values, function (err, succ) {
+      if (err) {
+        console.log(err);
+        result(err, null);
+      } else {
+        result(null, true);
       }
     });
   });
