@@ -1,5 +1,6 @@
 var express = require('express')
 var cors = require('cors')
+var nm = require('nodemailer')
 var app = express()
 
 var createEventRouter = require('./api/routes/createEventRouter')
