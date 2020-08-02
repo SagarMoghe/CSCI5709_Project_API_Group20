@@ -30,10 +30,11 @@ app.use("/findevents", findEventRouter)
 app.use("/insertFeedback", insertFeedback)
 
 
-app.use("/requestsreceived",requestsRouter)
-app.use("/usermng",userMngRouter)
+// app.use("/requestsreceived",requestsRouter)
+// app.use("/usermng",userMngRouter)
 app.use("/requestsreceived", requestsRouter)
 app.use("/usermng", userMngRouter)
 app.use("/verifyid", userMngRouter)
+
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log('listening on port....' + port));
