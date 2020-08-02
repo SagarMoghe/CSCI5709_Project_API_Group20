@@ -41,6 +41,7 @@ exports.registerUser = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 exports.forgotPassword = (req, res) => {
   emailObj.forgotPassword(req.body, (err, succ) => {
     if (err) {
