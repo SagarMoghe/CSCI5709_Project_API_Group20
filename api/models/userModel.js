@@ -23,7 +23,7 @@ Obj._getUserDetails = (res) => {
 // @route GET api /usermng/getSpecificUser
 // @desc get specific user
 // @access Public
-//GET Route to fetch all the users from FCS DB
+//POST Route to fetch the specific user using emailid from FCS DB
 Obj._getSpecificUser = (req, res) => {
   connection.db566.then(function (connection) {
     console.log("-----------------");
@@ -53,7 +53,7 @@ Obj._getSpecificUser = (req, res) => {
 // @route GET api /usermng/login
 // @desc get users
 // @access Public
-//GET Route to fetch the user from FCS DB
+//POST Route to login the user
 Obj._loginUser = (req, res) => {
   console.log(req);
   const password = req.user.password;

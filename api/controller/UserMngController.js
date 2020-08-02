@@ -1,4 +1,5 @@
 const UserMngObjModel = require("../models/userModel");
+const emailObj = require("./emailController");
 
 exports.getUserDetails = (req, res) => {
   UserMngObjModel._getUserDetails((err, succ) => {
@@ -29,6 +30,24 @@ exports.loginUser = (req, res) => {
 
 exports.registerUser = (req, res) => {
   UserMngObjModel._registerUser(req.body, (err, succ) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(succ);
+  });
+};
+
+exports.forgotPassword = (req, res) => {
+  emailObj.forgotPassword(req.body, (err, succ) => {
+    if (err) {
+      res.send(err);
+    }
+    res.send(succ);
+  });
+};
+
+exports.receiveNewPassword = (req, res) => {
+  emailObj.receiveNewPassword(req, (err, succ) => {
     if (err) {
       res.send(err);
     }
