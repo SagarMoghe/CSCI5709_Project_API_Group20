@@ -1,7 +1,7 @@
 //Author - Jigar Makwana B00842568
 var connection = require("../models/DatabaseConn");
 const { NULL } = require("mysql2/lib/constants/types");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const bcrypt = require( "bcryptjs");
 const {transporter, getPasswordResetURL, resetPasswordTemplate} = require("../models/emailModel");
 
