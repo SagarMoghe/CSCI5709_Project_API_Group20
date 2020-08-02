@@ -21,6 +21,13 @@ Obj.getUserEventsHistory = (userId, result) => {
   });
 };
 
+
+Obj.gettest = (userId, result) => {
+  result(null, "test");
+};
+
+
+
 //POST the event. insert created event to database
 Obj.postUserEvent = (userId, event, result) => {
   var sql =

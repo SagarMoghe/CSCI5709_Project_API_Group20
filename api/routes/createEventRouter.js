@@ -13,4 +13,6 @@ router.put("/updateEvent/:userId", createController.update_User_Event)
 //DELETE events
 router.delete("/deleteevent/:userId/:eventid", createController.delete_User_Event)
 
+router.get("/test/", createController.get_test)
+
 module.exports = router;
