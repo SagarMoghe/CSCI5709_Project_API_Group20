@@ -21,6 +21,15 @@ Obj.getUserEventsHistory = (userId, result) => {
   });
 };
 
+
+Obj.gettest = (userId, result) => {
+  connection.db566.then(function (connection) {
+    result(null, "test");
+  })
+};
+
+
+
 //POST the event. insert created event to database
 Obj.postUserEvent = (userId, event, result) => {
   var sql =

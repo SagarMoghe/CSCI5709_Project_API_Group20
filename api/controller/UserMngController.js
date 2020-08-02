@@ -1,3 +1,4 @@
+//Author - Jigar Makwana B00842568
 const UserMngObjModel = require("../models/userModel");
 const emailObj = require("./emailController");
 
@@ -10,6 +11,7 @@ exports.getUserDetails = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 exports.getSpecificUser = (req, res) => {
   UserMngObjModel._getSpecificUser(req.body, (err, succ) => {
     if (err) {
@@ -19,6 +21,7 @@ exports.getSpecificUser = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 exports.loginUser = (req, res) => {
   UserMngObjModel._loginUser(req.body, (err, succ) => {
     if (err) {
@@ -28,6 +31,7 @@ exports.loginUser = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 exports.registerUser = (req, res) => {
   UserMngObjModel._registerUser(req.body, (err, succ) => {
     if (err) {
@@ -55,6 +59,7 @@ exports.receiveNewPassword = (req, res) => {
   });
 };
 
+//Author - Jigar Makwana B00842568
 exports.updateUserDetail = (req, res) => {
   UserMngObjModel._updateUserDetail(
     req.params.userId,
@@ -82,6 +87,7 @@ exports.updateUserProfile = (req, res) => {
   );
 };
 
+//Author - Jigar Makwana B00842568
 exports.deleteUser = (req, res) => {
   UserMngObjModel._deleteUser(req.params.userId, (err, succ) => {
     if (err) {
