@@ -21,7 +21,9 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "mysql2": "^2.1.0",
-    "ssh2": "^0.8.9"
+    "ssh2": "^0.8.9",
+    "jsonwebtoken": "^8.5.1",
+    "nodemailer": "^6.4.11"
   },
   "devDependencies": {
     "jsonwebtoken": "^8.5.1",
