@@ -1,10 +1,11 @@
+//Author - Jigar Makwana B00842568
 var connection = require("../models/DatabaseConn");
 const { NULL } = require("mysql2/lib/constants/types");
 const jwt = require("jsonwebtoken");
 const bcrypt = require( "bcryptjs");
 const {transporter, getPasswordResetURL, resetPasswordTemplate} = require("../models/emailModel");
 
-
+//Author - Jigar Makwana B00842568
 // @route POST api /usermng/forgotPassword
 // @desc forgot password
 // @access Public
@@ -42,6 +43,9 @@ exports.forgotPassword = (req, res) => {
 //     return token
 // }
 
+//Author - Jigar Makwana B00842568
+// @desc helper function to send password reset email
+// @access Public
 sendPasswordResetEmail = (user) => {
     console.log("In sendPasswordResetEmail: " + user.userId);
     // const token = usePasswordHashToMakeToken(user)
@@ -62,8 +66,11 @@ sendPasswordResetEmail = (user) => {
     sendEmail();
 }
 
-
-
+//Author - Jigar Makwana B00842568
+// @route POST api /resetpassword/:userId
+// @desc rest password
+// @access Public
+//PUT Route to handle password reset functionality
 exports.receiveNewPassword = (req, result) => {
     const { userId } = req.params
     const { password } = req.body
