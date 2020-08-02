@@ -23,7 +23,9 @@ Obj.getUserEventsHistory = (userId, result) => {
 
 
 Obj.gettest = (userId, result) => {
-  result(null, "test");
+  connection.db566.then(function (connection) {
+    result(null, "test");
+  })
 };
 
 
