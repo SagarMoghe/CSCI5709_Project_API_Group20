@@ -52,13 +52,14 @@ Obj.postRequestedEvent = (userId, event, result) => {
             if (err) {
                 console.log(err);
             } else if (searchresult.length == 0) {
-                var query = `INSERT INTO requestevent (eventid,userid,seats,description,status) VALUES (?) `;
+                var query = `INSERT INTO requestevent (eventid,userid,seats,description,status, timeStamp) VALUES (?) `;
                 var values = [
                     event.eventid,
                     event.userid,
                     event.seats,
                     event.description,
-                    -1
+                    -1,
+                    new Date()
                 ];
 
                 connection.query(query, [values], (err, insertresult) => {
@@ -71,10 +72,59 @@ Obj.postRequestedEvent = (userId, event, result) => {
             } else {
                 result("exist", null)
             }
-
         });
     });
 
 };
+
+//Author - Jigar Makwana B00842568
+// @route POST api /manageReq/:eventid/:action
+// @desc manage request status
+// @access Public
+//PUT Route to update request status
+Obj.manage_request = (req, result) => {
+    const { eventid, action} = req.params
+    console.log("In reset password userId: " + eventid);
+    console.log("In reset password action: " + action);
+    var sqlUpdate = "UPDATE requestevent SET status=? WHERE eventid= " + eventid;
+        connection.db566.then(function (connection) {
+            connection.query(sqlUpdate, action, function (err, succ) {
+                if (err) {
+                    console.log(err);
+                    // console.log("update unsuccessful");
+                    result(err, null);
+                } else {
+                    // console.log("update success!");
+                    result(null, true);
+                }
+            });
+        });
+}
+
+
+//Author - Jigar Makwana B00842568
+// @route POST api /getReqStatus/:eventid
+// @desc get request status
+// @access Public
+//GET Route to get request status
+Obj.get_req_status = (req, result) => {
+    const { eventid, requesteventId} = req.params
+    console.log("In reset password userId: " + eventid);
+    var getStatus = "SELECT status, timeStamp FROM requestevent WHERE eventid = " +
+        eventid + " AND requesteventId = " + requesteventId;
+    connection.db566.then(function (connection) {
+        connection.query(getStatus, function (err, succ) {
+            if (err) {
+                console.log(err);
+                console.log("unsuccessful");
+                result(err, null);
+            } else {
+                console.log("this is status: " + succ[0].status);
+                console.log("got the status successfully!");
+                result(null, succ);
+            }
+        });
+    });
+}
 
 module.exports = Obj;

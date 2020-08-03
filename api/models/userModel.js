@@ -8,7 +8,7 @@ var Obj = function () {};
 // @desc get users
 // @access Public
 //GET Route to fetch all the users from FCS DB
-Obj._getUserDetails = (res) => {
+Obj._getAllUsers = (res) => {
   connection.db566.then(function (connection) {
     let sql = "select * from users";
     let query = connection.query(sql, (err, result) => {
@@ -23,15 +23,15 @@ Obj._getUserDetails = (res) => {
 
 //Author - Jigar Makwana B00842568
 // @route GET api /usermng/getSpecificUser
-// @desc get specific user
+// @desc get specific user by email id
 // @access Public
-//POST Route to fetch the specific user using emailid from FCS DB
+//POST Route to fetch the specific user using email id from FCS DB
 Obj._getSpecificUser = (req, res) => {
   connection.db566.then(function (connection) {
-    console.log("-----------------");
-    console.log("in _getSpecificUser");
+    // console.log("-----------------");
+    // console.log("in _getSpecificUser");
     const email = req.user.email;
-    console.log("_getSpecificUser " + email);
+    // console.log("_getSpecificUser " + email);
     let where = "email = ?";
     let sqlSelect = "SELECT * FROM users WHERE " + where;
     let query = connection.query(sqlSelect, email, (err, result) => {
@@ -44,8 +44,39 @@ Obj._getSpecificUser = (req, res) => {
         );
         res(null);
       } else {
+        // console.log(result);
+        // console.log("_getSpecificUser: This is userid: " + result[0].userId);
+        res(null, result);
+      }
+    });
+  });
+};
+
+//Author - Jigar Makwana B00842568
+// @route GET api /usermng/getUserById/:userId
+// @desc get specific user by user id
+// @access Public
+//GET Route to fetch the specific user using user id from FCS DB
+Obj._getUserById = (req, res) => {
+  connection.db566.then(function (connection) {
+    // console.log("-----------------");
+    // console.log("in _getUserById");
+    const { userId } = req.params
+    // console.log("_getUserById " + userId);
+    let where = "userId = ?";
+    let sqlSelect = "SELECT * FROM users WHERE " + where;
+    let query = connection.query(sqlSelect, userId, (err, result) => {
+      if (err) {
+        console.log(err);
+        res(err, null);
+      } else if (result.length === 0) {
+        console.log(
+            "_getSpecificUser: User not found."
+        );
+        res(null);
+      } else {
         console.log(result);
-        console.log("_getSpecificUser: This is userid: " + result[0].userId);
+        // console.log("_getSpecificUser: This is userid: " + result[0].userId);
         res(null, result);
       }
     });
@@ -78,10 +109,10 @@ Obj._loginUser = (req, res) => {
         // Check password
         bcrypt.compare(password, hashedPassword).then((isMatch) => {
           if (isMatch) {
-            console.log("Login successful!");
+            // console.log("Login successful!");
             res(null, result);
           } else {
-            console.log("Invalid Password");
+            // console.log("Invalid Password");
             res(null);
           }
         });
@@ -208,7 +239,7 @@ Obj._deleteUser = (userId, result) => {
         console.log(err);
         result(err, null);
       } else {
-        console.log("User " + userId + " deleted from users table");
+        // console.log("User " + userId + " deleted from users table");
         // result(null, 'User ' + userId + ' deleted from users table');
         // result(null, true);
       }
