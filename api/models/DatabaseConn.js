@@ -1,6 +1,9 @@
 //@Author - RajKumar B00849566
 
 const mysql566 = require('mysql2');
+const {
+    Stream
+} = require('nodemailer/lib/xoauth2');
 var Client = require('ssh2').Client;
 var ssh566 = new Client();
 
@@ -21,6 +24,26 @@ var ssh566 = new Client();
 
 //     //             if (err) throw err; // SSH error: can also send error in promise ex. reject(err)
 //     //             // use `sql` connection as usual
+// var connection= mysql566.createConnection({
+//     host: 'rideshare.clk7cf9g9ru4.us-east-1.rds.amazonaws.com',
+//     user: "admin",
+//     password: 'Test1234', //TODO: Password in env or separate file
+//     port: 3306,
+//     database: 'rideshareDB'
+//     stream: stream
+// });
+
+// // send connection back in variable depending on success or not
+// connection.connect(function (err) {
+//     if (err) {
+//         console.log("error aai bhai!")
+//         //resolve(connection);
+//         reject(err);
+//     } else {
+//         resolve(db)
+//     }
+// });
+
 
 //     //         });
 //     // }).connect({
@@ -51,7 +74,7 @@ var db566 = new Promise((resolve, reject) => {
             //resolve(connection);
             reject(err);
         } else {
-            resolve(db)
+            resolve(db);
         }
     });
 
