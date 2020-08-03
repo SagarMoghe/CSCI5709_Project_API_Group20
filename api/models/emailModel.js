@@ -30,10 +30,10 @@ exports.resetPasswordTemplate = (user, url) => {
     const subject = "🌻 RideShare Password Reset 🌻"
     const html = `
   <p>Hey ${user.displayName || user.email},</p>
-  <p>We come to know that you lost your RideShare password. Sorry about it!</p>
+  <p>We are sorry to hear that you have lost your RideShare password.</p>
   <p>But don’t worry! Use the following link to reset your password:</p>
   <a href=${url}>${url}</a>
-  <p>The link expires in 1 hour.</p>
+  <p>See you soon on RideShare!</p>
   `
     return { from, to, subject, html }
 }
