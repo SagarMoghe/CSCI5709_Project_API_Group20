@@ -17,8 +17,8 @@ module.exports.transporter = nodemailer.createTransport({
 // @access Public
 exports.getPasswordResetURL = (userId) =>
     // `http://localhost:3000/resetpassword/${userId}/${token}`
-    // `https://eventgoapi.herokuapp.com/usermng/resetpassword/${userId}`
-        `http://localhost:3000/resetpassword/${userId}`
+    `https://eventgoapi.herokuapp.com/usermng/resetpassword/${userId}`
+        // `http://localhost:3000/resetpassword/${userId}`
 
 
 //Author - Jigar Makwana B00842568
