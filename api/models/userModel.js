@@ -1,5 +1,7 @@
 var connection = require("./DatabaseConn");
-const { NULL } = require("mysql2/lib/constants/types");
+const {
+  NULL
+} = require("mysql2/lib/constants/types");
 const bcrypt = require("bcryptjs");
 var Obj = function () {};
 
@@ -8,7 +10,7 @@ var Obj = function () {};
 // @desc get users
 // @access Public
 //GET Route to fetch all the users from FCS DB
-Obj._getUserDetails = (res) => {
+Obj._getAllUsers = (res) => {
   connection.db566.then(function (connection) {
     let sql = "select * from users";
     let query = connection.query(sql, (err, result) => {
@@ -23,15 +25,15 @@ Obj._getUserDetails = (res) => {
 
 //Author - Jigar Makwana B00842568
 // @route GET api /usermng/getSpecificUser
-// @desc get specific user
+// @desc get specific user by email id
 // @access Public
-//GET Route to fetch all the users from FCS DB
+//POST Route to fetch the specific user using email id from FCS DB
 Obj._getSpecificUser = (req, res) => {
   connection.db566.then(function (connection) {
-    console.log("-----------------");
-    console.log("in _getSpecificUser");
+    // console.log("-----------------");
+    // console.log("in _getSpecificUser");
     const email = req.user.email;
-    console.log("_getSpecificUser " + email);
+    // console.log("_getSpecificUser " + email);
     let where = "email = ?";
     let sqlSelect = "SELECT * FROM users WHERE " + where;
     let query = connection.query(sqlSelect, email, (err, result) => {
@@ -44,8 +46,39 @@ Obj._getSpecificUser = (req, res) => {
         );
         res(null);
       } else {
+        // console.log(result);
+        // console.log("_getSpecificUser: This is userid: " + result[0].userId);
+        res(null, result);
+      }
+    });
+  });
+};
+
+//Author - Jigar Makwana B00842568
+// @route GET api /usermng/getUserById/:userId
+// @desc get specific user by user id
+// @access Public
+//GET Route to fetch the specific user using user id from FCS DB
+Obj._getUserById = (req, res) => {
+  connection.db566.then(function (connection) {
+    // console.log("-----------------");
+    // console.log("in _getUserById");
+    const { userId } = req.params
+    // console.log("_getUserById " + userId);
+    let where = "userId = ?";
+    let sqlSelect = "SELECT * FROM users WHERE " + where;
+    let query = connection.query(sqlSelect, userId, (err, result) => {
+      if (err) {
+        console.log(err);
+        res(err, null);
+      } else if (result.length === 0) {
+        console.log(
+            "_getSpecificUser: User not found."
+        );
+        res(null);
+      } else {
         console.log(result);
-        console.log("_getSpecificUser: This is userid: " + result[0].userId);
+        // console.log("_getSpecificUser: This is userid: " + result[0].userId);
         res(null, result);
       }
     });
@@ -56,7 +89,7 @@ Obj._getSpecificUser = (req, res) => {
 // @route GET api /usermng/login
 // @desc get users
 // @access Public
-//GET Route to fetch the user from FCS DB
+//POST Route to login the user
 Obj._loginUser = (req, res) => {
   console.log(req);
   const password = req.user.password;
@@ -78,10 +111,10 @@ Obj._loginUser = (req, res) => {
         // Check password
         bcrypt.compare(password, hashedPassword).then((isMatch) => {
           if (isMatch) {
-            console.log("Login successful!");
+            // console.log("Login successful!");
             res(null, result);
           } else {
-            console.log("Invalid Password");
+            // console.log("Invalid Password");
             res(null);
           }
         });
@@ -127,8 +160,8 @@ Obj._registerUser = (req, res) => {
             } else {
               console.log(
                 "_registerUser: User " +
-                  req.user.email +
-                  " added in users table"
+                req.user.email +
+                " added in users table"
               );
               console.log(result);
               res(null, result);
@@ -138,8 +171,8 @@ Obj._registerUser = (req, res) => {
       } else {
         console.log(
           "_registerUser: Email id " +
-            req.user.email +
-            " already exists in our database"
+          req.user.email +
+          " already exists in our database"
         );
         err = "Email id " + req.user.email + " already exists in our database";
         // res(err);
@@ -155,10 +188,12 @@ Obj._registerUser = (req, res) => {
 // @access Public
 //PUT Route to update a user record in FCS DB
 Obj._updateUserDetail = (userId, req, result) => {
-  values = [req.userName, req.email, req.password, req.dob, req.gender];
+  console.log("dgwi n  kjwk")
+  console.log(req)
+  values = [req.fullName, req.phone, req.profession, req.bio, req.url[0]];
   // console.log(req.userName, req.email, req.password, req.dob, req.gender)
   var sqlUpdate =
-    "UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= " +
+    "UPDATE users SET userName=? , phone=? , profession=?, bio=?, profile_image=? WHERE userId= " +
     userId;
   connection.db566.then(function (connection) {
     connection.query(sqlUpdate, values, function (err, succ) {
@@ -170,6 +205,22 @@ Obj._updateUserDetail = (userId, req, result) => {
       }
     });
   });
+  // values = [req.userName, req.email, req.password, req.dob, req.gender];
+  // // console.log(req.userName, req.email, req.password, req.dob, req.gender)
+  // var sqlUpdate =
+  //   "UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= " +
+  //   userId;
+  // connection.db566.then(function (connection) {
+  //   connection.query(sqlUpdate, values, function (err, succ) {
+  //     if (err) {
+  //       console.log(err);
+  //       result(err, null);
+  //     } else {
+  //       console.log("sucsdckhberujh")
+  //       result(null, true);
+  //     }
+  //   });
+  // });
 };
 
 // Author Nishant Amoli - B00835717
@@ -208,7 +259,7 @@ Obj._deleteUser = (userId, result) => {
         console.log(err);
         result(err, null);
       } else {
-        console.log("User " + userId + " deleted from users table");
+        // console.log("User " + userId + " deleted from users table");
         // result(null, 'User ' + userId + ' deleted from users table');
         // result(null, true);
       }
