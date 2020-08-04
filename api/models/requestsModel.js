@@ -87,18 +87,18 @@ Obj.manage_request = (req, result) => {
     console.log("In reset password userId: " + eventid);
     console.log("In reset password action: " + action);
     var sqlUpdate = "UPDATE requestevent SET status=? WHERE eventid= " + eventid;
-        connection.db566.then(function (connection) {
-            connection.query(sqlUpdate, action, function (err, succ) {
-                if (err) {
-                    console.log(err);
-                    // console.log("update unsuccessful");
-                    result(err, null);
-                } else {
-                    // console.log("update success!");
-                    result(null, true);
-                }
-            });
+    connection.db566.then(function (connection) {
+        connection.query(sqlUpdate, action, function (err, succ) {
+            if (err) {
+                console.log(err);
+                // console.log("update unsuccessful");
+                result(err, null);
+            } else {
+                // console.log("update success!");
+                result(null, true);
+            }
         });
+    });
 }
 
 
@@ -124,6 +124,33 @@ Obj.get_req_status = (req, result) => {
                 result(null, succ);
             }
         });
+    });
+}
+
+//Author - Jigar Makwana B00842568
+// @route POST api /getresponses/:userId
+// @desc get responses
+// @access Public
+//GET Route to get responses
+Obj.get_responses = (userId, result) => {
+    connection.db566.then(function (connection) {
+        let req_sql = ` select c.eventid, c.userid as createrUserId, r.userid as reqUserId, requesteventId, status, timeStamp, 
+                        fromAddress, toAddress, c.seats, estPrice, c.description, doj, createddate
+                        from createdevents c
+                        join requestevent r
+                        on r.eventid = c.eventid 
+                        where r.userid = ` + userId;
+
+        connection.query(req_sql, (error2, reqResult) => {
+            if (error2) {
+                console.log(error2);
+            } else {
+                let postresult = {
+                    requests: reqResult
+                };
+                result(null, postresult);
+            }
+        })
     });
 }
 

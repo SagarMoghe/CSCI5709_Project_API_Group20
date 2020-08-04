@@ -50,3 +50,13 @@ exports.get_req_status = (req, res) => {
     })
 }
 
+//Author - Jigar Makwana B00842568
+exports.get_responses = (req, res) => {
+    EventObjModel.get_responses(req.params.userId, (err, succ) => {
+        if (err) {
+            res.send('error occured -- controller');
+        }
+        res.json(succ)
+    })
+}
+
