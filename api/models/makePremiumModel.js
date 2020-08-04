@@ -1,17 +1,15 @@
-//@Author - RajKumar B00849566
+//Sagar Moghe B00838037
 
-var connection = require('./DatabaseConn');
+let connection = require('./DatabaseConn');
 
+let Obj = function () {
 
+};
 
-var Obj = function () {
-
-}
-
-//GET all matches that are not part of user who is searching
-Obj.findEvents = (userId, result) => {
+Obj._makePremium = (req, result) => {
     connection.db566.then(function (connection) {
-        let sql566 = 'select * from createdevents where userid !='+userId+" ORDER BY bumped DESC";
+        console.log("API userid",req.params.userId)
+        let sql566 = "UPDATE users SET isPremium = 1 WHERE userId ="+req.params.userId
         let query566 = connection.query(sql566, (error566, result566) => {
             if (error566) {
                 console.log(error566);
