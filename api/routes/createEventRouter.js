@@ -8,6 +8,7 @@ const router = express.Router();
 router.get("/getHistory/:userId", createController.get_User_EventsHistory)
 //POST events
 router.post("/postEvent/:userId", createController.post_User_Event)
+router.put("/bumpTimeStamp/:eventid", createController.bumpTimeStamp)
 //UPDATE events
 router.put("/updateEvent/:userId", createController.update_User_Event)
 //DELETE events
