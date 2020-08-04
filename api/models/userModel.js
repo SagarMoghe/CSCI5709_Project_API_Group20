@@ -63,7 +63,9 @@ Obj._getUserById = (req, res) => {
   connection.db566.then(function (connection) {
     // console.log("-----------------");
     // console.log("in _getUserById");
-    const { userId } = req.params
+    const {
+      userId
+    } = req.params
     // console.log("_getUserById " + userId);
     let where = "userId = ?";
     let sqlSelect = "SELECT * FROM users WHERE " + where;
@@ -73,7 +75,7 @@ Obj._getUserById = (req, res) => {
         res(err, null);
       } else if (result.length === 0) {
         console.log(
-            "_getSpecificUser: User not found."
+          "_getSpecificUser: User not found."
         );
         res(null);
       } else {
@@ -250,6 +252,7 @@ Obj._updateUserProfile = (userId, req, result) => {
 // @access Public
 //DELETE Route to delete a user record from FCS DB
 Obj._deleteUser = (userId, result) => {
+  console.log("inside delete api")
   let where = "userId = ?";
   let sqlSelect = "DELETE FROM users WHERE " + where;
   console.log(sqlSelect);
@@ -261,7 +264,7 @@ Obj._deleteUser = (userId, result) => {
       } else {
         // console.log("User " + userId + " deleted from users table");
         // result(null, 'User ' + userId + ' deleted from users table');
-        // result(null, true);
+        result(null, true);
       }
     });
   });
