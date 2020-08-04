@@ -19,7 +19,44 @@ exports.post_requests = (req, res) => {
             console.log("succ", succ)
             res.json(succ)
         }
-
-
     })
 }
+
+//Author - Jigar Makwana B00842568
+exports.manage_request = (req, res) => {
+    EventObjModel.manage_request(req, (err, succ) => {
+        if (err) {
+            console.log("err", err);
+            res.json(err);
+        }
+        if (succ) {
+            console.log("succ", succ)
+            res.json(succ)
+        }
+    })
+}
+
+//Author - Jigar Makwana B00842568
+exports.get_req_status = (req, res) => {
+    EventObjModel.get_req_status(req, (err, succ) => {
+        if (err) {
+            console.log("err", err);
+            res.json(err);
+        }
+        if (succ) {
+            console.log("succ", succ)
+            res.json(succ)
+        }
+    })
+}
+
+//Author - Jigar Makwana B00842568
+exports.get_responses = (req, res) => {
+    EventObjModel.get_responses(req.params.userId, (err, succ) => {
+        if (err) {
+            res.send('error occured -- controller');
+        }
+        res.json(succ)
+    })
+}
+

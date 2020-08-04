@@ -4,8 +4,9 @@ const userMngController = require("../controller/UserMngController");
 const emailController = require("../controller/emailController")
 const router = express.Router();
 
-router.get("/getUsers", userMngController.getUserDetails);
+router.get("/getUsers", userMngController.getAllUsers);
 router.post("/getSpecificUser", userMngController.getSpecificUser);
+router.get("/getUserById/:userId", userMngController.getUserById);
 router.post("/login", userMngController.loginUser);
 router.post("/registerUser", userMngController.registerUser);
 router.post("/forgotPassword", userMngController.forgotPassword);
