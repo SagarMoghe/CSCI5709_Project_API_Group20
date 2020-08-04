@@ -1,5 +1,7 @@
 var connection = require("./DatabaseConn");
-const { NULL } = require("mysql2/lib/constants/types");
+const {
+  NULL
+} = require("mysql2/lib/constants/types");
 const bcrypt = require("bcryptjs");
 var Obj = function () {};
 
@@ -127,8 +129,8 @@ Obj._registerUser = (req, res) => {
             } else {
               console.log(
                 "_registerUser: User " +
-                  req.user.email +
-                  " added in users table"
+                req.user.email +
+                " added in users table"
               );
               console.log(result);
               res(null, result);
@@ -138,8 +140,8 @@ Obj._registerUser = (req, res) => {
       } else {
         console.log(
           "_registerUser: Email id " +
-            req.user.email +
-            " already exists in our database"
+          req.user.email +
+          " already exists in our database"
         );
         err = "Email id " + req.user.email + " already exists in our database";
         // res(err);
@@ -155,10 +157,12 @@ Obj._registerUser = (req, res) => {
 // @access Public
 //PUT Route to update a user record in FCS DB
 Obj._updateUserDetail = (userId, req, result) => {
-  values = [req.userName, req.email, req.password, req.dob, req.gender];
+  console.log("dgwi n  kjwk")
+  console.log(req)
+  values = [req.fullName, req.phone, req.profession, req.bio, req.url[0]];
   // console.log(req.userName, req.email, req.password, req.dob, req.gender)
   var sqlUpdate =
-    "UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= " +
+    "UPDATE users SET userName=? , phone=? , profession=?, bio=?, profile_image=? WHERE userId= " +
     userId;
   connection.db566.then(function (connection) {
     connection.query(sqlUpdate, values, function (err, succ) {
@@ -170,6 +174,22 @@ Obj._updateUserDetail = (userId, req, result) => {
       }
     });
   });
+  // values = [req.userName, req.email, req.password, req.dob, req.gender];
+  // // console.log(req.userName, req.email, req.password, req.dob, req.gender)
+  // var sqlUpdate =
+  //   "UPDATE users SET userName=? , email=? , password=? , dob=? , gender=? WHERE userId= " +
+  //   userId;
+  // connection.db566.then(function (connection) {
+  //   connection.query(sqlUpdate, values, function (err, succ) {
+  //     if (err) {
+  //       console.log(err);
+  //       result(err, null);
+  //     } else {
+  //       console.log("sucsdckhberujh")
+  //       result(null, true);
+  //     }
+  //   });
+  // });
 };
 
 // Author Nishant Amoli - B00835717

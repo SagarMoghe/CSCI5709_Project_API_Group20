@@ -14,10 +14,10 @@ app.use(cors())
 
 // var corsOptions = {
 
-//     //origin: 'http://localhost:3000'
-//     origin: 'https://csci5709webgroup20.herokuapp.com'
+//     origin: 'http://localhost:3000'
+//     // origin: 'https://csci5709webgroup20.herokuapp.com'
 // }
-//cors(corsOptions),
+// cors(corsOptions),
 
 //All requests related to CreateEvent screen goes here
 app.use("/createevent", createEventRouter)
